@@ -1,0 +1,19 @@
+<package>
+  <name>test_gazebo</name>
+  <version>0.1.0</version>
+  <description>test_gazebo</description>
+  <maintainer email="zahra.boroujeni@gmail.com">Zahra Boroujeni</maintainer>
+
+  <license>BSD</license>
+
+  <author email="zahra.boroujeni@gmail.com">Zahra Boroujeni</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>test_description</run_depend>
+  <run_depend>test_control</run_depend> 
+  <run_depend>gazebo_ros</run_depend> 
+
+  <export>
+  </export>
+</package>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <name>test_description</name>
+  <version>0.0.0</version>
+  <description>The audi_description package</description>
+
+  <maintainer email="zahra.boroujeni@gmail.com">Zahra Boroujeni</maintainer>
+
+  <license>BSD</license>
+
+
+  <author email="zahra.boroujeni@gmail.com">Zahra Boroujeni</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

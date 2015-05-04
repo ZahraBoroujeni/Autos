@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<robot
+xmlns:gazebo="http://playerstage.sourceforge.net/gazebo/xmlschema/#gz"
+xmlns:model="http://playerstage.sourceforge.net/gazebo/xmlschema/#model"
+xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+xmlns:body="http://playerstage.sourceforge.net/gazebo/xmlschema/#body"
+xmlns:geom="http://playerstage.sourceforge.net/gazebo/xmlschema/#geom"
+xmlns:joint="http://playerstage.sourceforge.net/gazebo/xmlschema/#joint"
+xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+xmlns:rendering="http://playerstage.sourceforge.net/gazebo/xmlschema/#rendering"
+xmlns:physics="http://playerstage.sourceforge.net/gazebo/xmlschema/#physics">
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/audi</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <!-- Main body -->
+  <gazebo reference="base_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <!-- Front link of Ackermann -->
+  <gazebo reference="front_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <!-- a link aligned with the steer direction -->
+  <gazebo reference="steer_link">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <!-- the left Ackermann bar -->
+  <gazebo reference="front_left_bar_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <!-- the right Ackermann bar -->
+  <gazebo reference="front_right_bar_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <!-- the front left wheel -->
+  <gazebo reference="front_left_wheel_link">
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <!-- the front right wheel -->
+  <gazebo reference="front_right_wheel_link">
+    <material>Gazebo/Green</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <!-- the Ackerman bar -->
+  <gazebo reference="ackermann_bar_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+<!--
+  <gazebo>
+    <joint:hinge name="ackermann_left_bar_joint">
+    <body1><link_name>ackermann_bar_link</link_name></body1>
+    <body2><link_name>front_left_bar_link</link_name></body2>
+    <anchor>a<link_name>ackermann_bar_link</link_name></anchor>
+    <axis>0 0 1</axis>
+    <anchorOffset>0 0.06 0</anchorOffset>
+    </joint:hinge>
+  </gazebo>
+
+  <gazebo>
+    <joint:hinge name="ackermann_right_bar_joint">
+    <body1>l<link_name>ackermann_bar_link</link_name></body1>
+    <body2><link_name>front_right_bar_link</link_name></body2>
+    <anchor><link_name>ackermann_bar_link</link_name></anchor>
+    <axis>0 0 1</axis>
+    <anchorOffset>0 -0.06 0</anchorOffset>
+  </joint:hinge>
+  </gazebo>-->
+  <!-- the back left wheel -->
+  <gazebo reference="back_left_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!-- the back right wheel -->
+  <gazebo reference="back_right_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <!--gazebo>
+      <plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+          <joint>front_left_bar_joint</joint>
+          <mimicJoint>front_right_bar_joint</mimicJoint>
+          <multiplier>1.0</multiplier>
+      </plugin>
+  </gazebo-->
+
+  <!-- Ackermann plugin -->
+  <!--
+  <gazebo>
+    <controller:ackermann_plugin name="ackermann_controller" plugin="libackermann_plugin.so">
+    <alwaysOn>true</alwaysOn>
+    <update>100</update>
+    <updateRate>100.0</updateRate>
+    <leftJoint>back_left_wheel_joint</leftJoint>
+    <rightJoint>back_right_wheel_joint</rightJoint>
+    <steerJoint>steer_joint</steerJoint>
+    <wheelSeparationWidth>0.16</wheelSeparationWidth>
+    <wheelSeparationLength>0.32</wheelSeparationLength>
+    <wheelDiameter>0.041</wheelDiameter>
+    <driveTorque>5</driveTorque>
+    <steerTorque>5</steerTorque>
+    <interface:position name="position_iface_0"/>
+    <robotNamespace>/</robotNamespace>
+    <topicName>pilot/drive</topicName>
+    </controller:ackermann_plugin>
+    <canonicalBody>base_footprint</canonicalBody>
+     this publishes empty joint_states due to no transmission, but
+    triggering robot_state_publisher to publish tf between fixed joints in erratic,
+    (e.g. base_laser_link for the base_scan frame) 
+    <controller:gazebo_ros_controller_manager name="gazebo_ros_controller_manager" plugin="libgazebo_ros_controller_manager.so">
+    <alwaysOn>true</alwaysOn>
+    <updateRate>100.0</updateRate>
+    <interface:audio name="gazebo_ros_controller_manager_dummy_iface"/>
+    </controller:gazebo_ros_controller_manager>
+  </gazebo>
+  -->
+
+    <!-- hokuyo -->
+  <gazebo reference="base_scan_link">
+    <sensor type="gpu_ray" name="laser">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>40</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-1.570796</min_angle>
+            <max_angle>1.570796</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>30.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise parameters based on published spec for Hokuyo laser
+               achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+               stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+               reading. -->
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_gpu_laser.so">
+        <topicName>/audi/laser/scan</topicName>
+        <frameName>base_scan_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+<gazebo reference="laser_base_link">
+  <material>Gazebo/Black</material>
+</gazebo>
+
+<gazebo reference="base_scan_link">
+  <material>Gazebo/Black</material>
+</gazebo>
+
+</robot>

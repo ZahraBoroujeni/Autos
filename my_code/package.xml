@@ -1,0 +1,32 @@
+<package>
+  <name>my_code</name>
+  <version>0.1.0</version>
+  <description>my_code</description>
+  <maintainer email="zahra.boroujeni@gmail.com">Zahra Boroujeni</maintainer>
+
+  <license>BSD</license>
+
+  <author email="zahra.boroujeni@gmail.com">Zahra Boroujeni</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <!-- Package Dependencies -->
+
+
+  <build_depend>message_generation</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+   <build_depend>gazebo_msgs</build_depend>
+
+  <run_depend>message_runtime</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+    <run_depend>gazebo_msgs</run_depend>
+
+
+
+<build_depend>boost</build_depend>
+
+  <export>
+  </export>
+</package>
