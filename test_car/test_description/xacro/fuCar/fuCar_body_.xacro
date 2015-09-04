@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <xacro:include filename="inertia_tensors.xacro"/>
+  <xacro:include filename="fuCar_chassis.xacro"/>
+  <xacro:include filename="fuCar_plugins.xacro"/>
+  <xacro:include filename="fuCar_wheels.xacro"/>
+  <xacro:include filename="fuCar_car.xacro"/>
+  
+  <xacro:macro name="fuCar_body" params="name parent meshes">
+    
+    <!-- base_link -->
+    <link name="${parent}"/>
+
+     <!-- Chassis -->
+    <xacro:fuCar_chassis name="${name}" parent="${parent}" xyz="0 0 0" rpy="0 0 0"  meshes="${meshes}"/>
+    <!-- Wheels -->
+    <xacro:wheels parent="${name}" meshes="${meshes}"/>
+
+    <xacro:streeing parent="${name}"/>
+
+     <!-- Motor plugin -->
+    <!--xacro:fuCar_diff_drive /-->
+    
+  </xacro:macro>
+</robot>

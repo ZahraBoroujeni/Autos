@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <property name="M_PI" value="3.1415926535897931" />
+
+  <xacro:macro name="fuCar_chassis" params="name parent xyz rpy meshes">   
+
+    <joint name="${parent}_${name}_joint" type="fixed">
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <parent link="${parent}"/>
+      <child link="${name}"/>
+    </joint>
+        
+    <!-- Chassis -->
+    <link name="${name}">
+      <inertial>
+        <origin xyz="0.1 0.0 0.4" rpy="0 0 0"/>
+        <mass value="720" />
+        <inertia ixx="140" ixy="0.0" ixz="0.0" iyy="550" iyz="0.0" izz="550" />
+      </inertial>
+      <visual name="visual">
+        <origin xyz="0 0 0" rpy="0 0 -1.570796"/>
+        <geometry>
+          <mesh filename="${meshes}/polaris.dae"/>
+        </geometry>
+      </visual>
+      <collision name="chassis_bottom">
+        <origin xyz="0.1 0.0 0.37" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.5 1.34 0.06"/>
+        </geometry>
+      </collision>
+      <collision name="cargo_bottom">
+        <origin xyz="-0.9 0.0 0.9" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.9 1.2 0.01"/>
+        </geometry>
+      </collision>
+      <collision name="cargo_front">
+        <origin xyz="-0.45 0.0 1.025" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.05 1.2 0.25"/>
+        </geometry>
+      </collision>
+      <collision name="cargo_back">
+        <origin xyz="-1.35 0.0 1.025" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.05 1.2 0.25"/>
+        </geometry>
+      </collision>
+      <collision name="cargo_left">
+        <origin xyz="-0.9 0.6 1.025" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.9 0.05 0.25"/>
+        </geometry>
+      </collision>
+      <collision name="cargo_right">
+        <origin xyz="-0.9 -0.6 1.025" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.9 0.05 0.25"/>
+        </geometry>
+      </collision>
+      <collision name="seat">
+        <origin xyz="-0.1 0.0 0.560" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.6 1.22 0.50"/>
+        </geometry>
+      </collision>
+      <collision name="mud_seat">
+        <origin xyz="-0.1 0.0 0.81" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.6 1.15 0.1"/>
+        </geometry>
+      </collision>
+      <collision name="seat_back">
+        <origin xyz="-0.3 0.0 1.125" rpy="0.0 -0.2 0.0"/>
+        <geometry>
+          <box size="0.06 1.0 0.4"/>
+        </geometry>
+      </collision>
+      <collision name="engine">
+        <origin xyz="1.05 0.0 0.7" rpy="0.0 0.0 0.0"/>
+        <geometry>
+          <box size="0.58 1.0 0.8"/>
+        </geometry>
+      </collision>
+      <!-- Begin simple collision shapes for entry/exit handles -->
+      <!--collision name="handle_left_top">
+        <pose>-0.23 0.61 1.175  0 -1.32 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>0.25</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="handle_left_bottom">
+        <pose>-0.20 0.61 0.98  0 -1.40 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>0.25</length>
+          </cylinder>
+        </geometry>
+      </collision-->
+      <collision name="handle_left_middle">
+        <origin xyz="-0.30 0.61 1.055" rpy="0 -0.20 0"/>
+        <geometry>
+          <cylinder radius="0.02" length="0.17"/>
+        </geometry>
+      </collision>
+      <!--collision name="handle_right_top">
+        <pose>-0.23 -0.61 1.175  0 -1.32 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>0.25</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="handle_right_bottom">
+        <pose>-0.20 -0.61 0.98  0 -1.40 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>0.25</length>
+          </cylinder>
+        </geometry>
+      </collision-->
+      <collision name="handle_right_middle">
+        <origin xyz="-0.30 -0.61 1.055" rpy="0 -0.20 0"/>
+        <geometry>
+          <cylinder length="0.02" radius="0.05"/>
+        </geometry>
+      </collision>
+      <!-- End simple collision shapes for entry/exit handles -->
+      <!-- Begin simple collision shapes for roll cage -->
+      <collision name="rollcage_top_left">
+        <origin xyz="0.0 0.61 1.92" rpy="0 1.61 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="0.68"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_top_right">
+        <origin xyz="0.0 -0.61 1.92" rpy="0 1.61 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="0.68"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_top_front">
+        <origin xyz="0.325 0.0 1.89" rpy="1.570796 0 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="1.22"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_top_back">
+        <origin xyz="-0.330 0.0 1.92" rpy="1.570796 0 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="1.22"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_front_left">
+        <origin xyz="0.54 0.61 1.45" rpy="0 -0.44 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="1.04"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_front_right">
+        <origin xyz="0.54 -0.61 1.45" rpy="0 -0.44 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="1.04"/>
+        </geometry>
+      </collision>
+      <collision name="fender_front_right">
+        <origin xyz="0.64 -0.61 0.70" rpy="0 0.35 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="0.72"/>
+        </geometry>
+      </collision>
+      <collision name="fender_front_left">
+        <origin xyz="0.64 0.61 0.70" rpy="0 0.35 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="0.72"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_back_left">
+        <origin xyz="-0.37 0.61 1.25" rpy="0 -0.14 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="0.90"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_back_right">
+        <origin xyz="-0.37 0.61 1.25" rpy="0 -0.14 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="0.90"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_back_midleft">
+        <origin xyz="-0.37 0.155 1.25" rpy="0 -0.14 0"/>
+        <geometry>
+          <cylinder length="0.023" radius="0.90"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_back_midright">
+        <origin xyz="-0.37 0.155 1.25" rpy="0 -0.14 0"/>
+        <geometry>
+          <cylinder length="0.023" radius="0.90"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_back_upper_left">
+        <origin xyz="-0.38 0.61 1.82" rpy="0 0.40 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="0.29"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_back_upper_right">
+        <origin xyz="-0.38 -0.61 1.82" rpy="0 0.40 0"/>
+        <geometry>
+          <cylinder length="0.03" radius="0.29"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_back_upper_midleft">
+        <origin xyz="-0.38 0.155 1.82" rpy="0 0.40 0"/>
+        <geometry>
+          <cylinder length="0.023" radius="0.29"/>
+        </geometry>
+      </collision>
+      <collision name="rollcage_back_upper_midright">
+        <origin xyz="-0.38 -0.155 1.82" rpy="0 0.40 0"/>
+        <geometry>
+          <cylinder length="0.023" radius="0.29"/>
+        </geometry>
+      </collision>
+      <!-- End simple collision shapes for roll cage -->
+      <!--<collision name="steering_column">
+        <pose>0.525 0.3 1.125 0.0 -0.8 0.0</pose> 
+        <geometry>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>0.45</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="steering_column_visual">
+        <pose>0.525 0.3 1.125 0.0 -0.8 0.0</pose> 
+        <geometry>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>0.45</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Black</name>
+          </script>
+        </material>
+      </visual>
+-->
+      <!-- the following was used as a guide for aligning the steering wheel mesh -->
+      <!--visual name="visual_steering_cylinder">
+        <pose>0.35 0.30 1.3  0 -0.87 0</pose> 
+        <geometry>
+          <cylinder>
+            <radius>0.17</radius>
+            <length>0.01</length>
+          </cylinder>
+        </geometry>
+      </visual-->
+    </link>
+
+    
+
+
+    <gazebo reference="${name}">
+      <visual name="visual">
+        <material>
+          <script>
+            <uri>model://polaris_ranger_ev/materials/scripts</uri>
+            <uri>model://polaris_ranger_ev/materials/textures</uri>
+            <name>Polaris/Diffuse</name>
+          </script>
+        </material>
+      </visual>
+      <sensor name="seat_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>1000</update_rate>
+        <contact>
+          <collision>mud_seat</collision>
+        </contact>
+      </sensor>
+    </gazebo>
+
+    
+
+    
+  </xacro:macro>
+</robot>

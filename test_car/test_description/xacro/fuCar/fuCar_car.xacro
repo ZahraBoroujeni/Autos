@@ -1,0 +1,303 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <property name="M_PI" value="3.1415926535897931" />
+  <xacro:macro name="streeing" params="parent"> 
+
+    <link name="steering_wheel">
+      <origin xyz="0.34 0.30 1.29" rpy="-0.69 -0.87 0"/> 
+      <inertial>
+        <origin xyz="0.34 0.30 1.29" rpy="-0.69 -0.87 0"/>
+        <mass value="1" />
+        <inertia ixx="0.012" ixy="0.0" ixz="0.0" iyy="0.012" iyz="0.0" izz="0.024" />
+      </inertial>
+      <collision name="collision">
+        <origin xyz="0.34 0.30 1.29" rpy="-0.69 -0.87 0"/>
+        <geometry>
+          <cylinder radius="0.16" length="0.01"/>
+        </geometry>
+      </collision>
+      <!-- visual used to measure size of mesh steering wheel -->
+      <visual name="visual">
+        <origin xyz="0.34 0.30 1.29" rpy="-0.69 -0.87 0"/>
+        <geometry>
+          <cylinder radius="0.16" length="0.01"/>
+        </geometry>
+        <material name="blue">
+          <color rgba="0.0 0.0 0.8 1.0"/>
+        </material>
+      </visual>
+    </link>
+
+    <link name="gas_pedal">
+      <origin xyz="0.5915 0.10 0.494" rpy="0 2.016 0"/>
+      <inertial>
+        <origin xyz="0.63 0.10 0.494 " rpy="0 0 0"/>
+        <mass value="0.1" />
+        <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01" />
+      </inertial>
+      <collision name="gas_pedal_collision">
+        <origin xyz="0.5915 0.10 0.494" rpy="0 2.016 0"/>
+        <geometry>
+          <box size="0.1069000 0.0770000 0.010000"/>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <origin xyz="0.5915 0.10 0.58 " rpy="0 2.016 0"/>
+        <geometry>
+          <box size="0.1069000 0.0770000 0.010000"/>
+        </geometry>
+        <material name="blue">
+          <color rgba="0 0 .8 1"/>
+        </material>
+      </visual>
+    </link>
+
+
+    <link name="brake_pedal">
+      <origin xyz="0.64 0.27 0.58" rpy="0 1.999 0"/>
+      <inertial>
+        <origin xyz="0.64 0.27 0.58 " rpy="0 1.999 0"/>
+        <mass value="0.1" />
+        <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01" />
+      </inertial>
+      <collision name="brake_pedal_collision">
+        <origin xyz="0.64 0.27 0.58" rpy="0 1.999 0"/>
+        <geometry>
+          <box size="0.063 0.08 0.01"/>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <origin xyz="0.64 0.27 0.58 " rpy="0 1.999 0"/>
+        <geometry>
+          <box size="0.063 0.08 0.01"/>
+        </geometry>
+        <material name="blue">
+          <color rgba="0 0 .8 1"/>
+        </material>
+      </visual>
+    </link>
+
+    <link name="hand_brake">
+      <origin xyz="0.53 0.07 1.1" rpy="-0.2 0 -1.570796"/>
+      <inertial>
+        <origin xyz="0.53 0.07 1.1" rpy="-0.2 0 -1.570796"/>
+        <mass value="0.5" />
+        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.05" />
+      </inertial>
+      <collision name="hand_brake_collision">
+        <origin xyz="0.53 0.07 1.1" rpy="-0.2 0 -1.570796"/>
+         <geometry>
+          <cylinder radius="0.01" length="0.2"/>
+        </geometry>
+      </collision>
+      <visual name="hand_brake_visual">
+        <origin xyz="0.53 0.07 1.1" rpy="-0.2 0 -1.570796"/>
+         <geometry>
+          <cylinder radius="0.01" length="0.2"/>
+        </geometry>
+        <material name="blue">
+          <color rgba="0 0 .8 1"/>
+        </material>
+      </visual>
+    </link>
+
+    <link name="FNR_switch">
+      <origin xyz="0.56 -0.02 1.08" rpy="0 0.25 0"/>
+      <inertial>
+        <origin xyz="0.56 -0.02 1.08" rpy="0 0.25 0"/>
+        <mass value="0.1" />
+        <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.00006" iyz="0.0" izz="0.1" />
+      </inertial>
+      <collision name="FNR_switch">
+        <origin xyz="0.56 -0.02 1.08" rpy="0 0.25 0"/>
+        <geometry>
+          <box size="0.02 0.04 0.08"/>
+        </geometry>
+      </collision>
+      <visual name="FNR_switch_F">
+        <origin xyz="0.56 -0.02 1.08" rpy="0 0.25 0"/>
+        <geometry>
+          <box size="0.02 0.04 0.08"/>
+        </geometry>
+        <material name="blue">
+          <color rgba="0 0 .8 1"/>
+        </material>
+      </visual>
+    </link>
+
+
+    <joint name="steering_joint" type="continuous">
+      <child link="steering_wheel"/>
+      <parent link="${parent}"/>
+      <axis xyz="-1 0 0.84365" />
+      <origin xyz="-0.002 0 0" rpy="0 0 0"/>
+      <limit lower="-3.14" upper="3.14" effort="1" velocity="1"/>   
+      <dynamics damping="1.0"/>
+    </joint>
+
+    <joint name="gas_joint" type="prismatic">
+      <child link="gas_pedal"/>
+      <parent link="${parent}"/>
+      <axis xyz="1 0 -1" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <limit lower="0" upper="0.08" effort="1" velocity="1"/>   
+      <dynamics damping="3.0"/>
+    </joint>
+
+    <joint name="brake_joint" type="prismatic">
+      <child link="brake_pedal"/>
+      <parent link="${parent}"/>
+      <axis xyz="1 0 -0.6" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <limit lower="0" upper="0.08" effort="1" velocity="1"/>   
+      <dynamics damping="3.0"/>
+    </joint>
+   
+    <joint name="hand_brake_joint" type="continuous">
+      <child link="hand_brake"/>
+      <parent link="${parent}"/>
+      <axis xyz="0.0 -1.0 0.0" />
+      <origin xyz="-0.002 0 0" rpy="0 0 0"/>
+      <limit lower="0" upper="0.6" effort="1" velocity="1"/>   
+      <dynamics damping="1.0"/>
+    </joint>
+    <joint name="FNR_switch_joint" type="continuous">
+      <child link="FNR_switch"/>
+      <parent link="${parent}"/>
+      <axis xyz="0.0 -1.0 0.0" />
+      <origin xyz="-0.002 0 0" rpy="0 0 0"/>
+      <limit lower="-0.3" upper="0.3" effort="1" velocity="1"/>   
+      <dynamics damping="0.01"/>
+    </joint>
+
+
+    <gazebo reference="steering_wheel">
+       <pose>0.34 0.30 1.29 0 -0.87 0</pose>
+      <inertial>
+        <mass>1.0</mass>
+        <pose>-0.002 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.012</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.012</iyy>
+          <iyz>0</iyz>
+          <izz>0.024</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <!-- rotate mesh to get to X-forward -->
+        <pose>0 0 0 -0.69 0 -1.570796</pose>
+        <geometry>
+          <mesh>
+            <uri>model://polaris_ranger_ev/meshes/polaris.dae</uri>
+            <submesh>
+              <name>Steering_Wheel</name>
+              <center>true</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.003</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <!-- rotate mesh to get to X-forward -->
+        <pose>0 0 0 -0.69 0 -1.570796</pose>
+        <geometry>
+          <mesh>
+            <uri>model://polaris_ranger_ev/meshes/polaris.dae</uri>
+            <submesh>
+              <name>Steering_Wheel</name>
+              <center>true</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://polaris_ranger_ev/materials/scripts</uri>
+            <uri>model://polaris_ranger_ev/materials/textures</uri>
+            <name>Polaris/Diffuse</name>
+          </script>
+        </material>
+      </visual>
+      <!-- visual used to measure size of mesh steering wheel -->
+      <!--visual name="vis_cyl">
+        <pose>0 0 0  0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.16</radius>
+            <length>0.01</length>
+          </cylinder>
+        </geometry>
+      </visual-->
+    </gazebo>
+
+    <gazebo reference="gas_pedal">
+      <gravity>false</gravity>
+      <visual name="visual">
+        <!-- rotate mesh to get to X-forward -->
+        <pose>0 0 0 0 0 -1.5707</pose>
+        <geometry>
+          <mesh>
+            <uri>model://polaris_ranger_ev/meshes/polaris.dae</uri>
+            <submesh>
+              <name>Pedal_Gas</name>
+              <center>true</center>
+            </submesh>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://polaris_ranger_ev/materials/scripts</uri>
+            <uri>model://polaris_ranger_ev/materials/textures</uri>
+            <name>Polaris/Diffuse</name>
+          </script>
+        </material>
+      </visual>
+    </gazebo>
+
+    <gazebo reference="brake_pedal">
+      <gravity>false</gravity>
+     </gazebo>
+    <gazebo reference="hand_brake">
+      <visual name="hand_brake_visual">
+        <!--pose>0 0 -0.10 0 0 0</pose-->
+        <pose>0 0 0.05 -0.2 0 -1.570796</pose>
+        <geometry>
+          <mesh>
+            <uri>model://polaris_ranger_ev/meshes/polaris.dae</uri>
+            <submesh>
+              <name>E-Brake</name>
+              <center>true</center>
+            </submesh>
+          </mesh>
+          <!--cylinder>
+            <radius>0.01</radius>
+            <length>0.2</length>
+          </cylinder-->
+        </geometry>
+        <material>
+          <script>
+            <uri>model://polaris_ranger_ev/materials/scripts</uri>
+            <uri>model://polaris_ranger_ev/materials/textures</uri>
+            <name>Polaris/Diffuse</name>
+          </script>
+          <!--script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Wood</name>
+          </script-->
+        </material>
+      </visual>
+    </gazebo>
+
+    <gazebo reference="FNR_switch">
+      <gravity>false</gravity>
+    </gazebo>
+
+  </xacro:macro>
+</robot>

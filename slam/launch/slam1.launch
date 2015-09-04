@@ -1,0 +1,10 @@
+<launch>
+  <!-- args = list of led id -->
+  <node pkg="slam" type="slam_node" name="slam1" args="0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15" output="screen">
+    <param name="map_file" value="$(find slam)/config/FEATURE_FILES/map.txt" />
+    <param name="camera_file" value="$(find slam)/config/FEATURE_FILES/camera.txt" />
+    <param name="start_frame" value="/world" />
+    <param name="end_frame" value="/camera"/>
+  </node>
+    <node pkg="tf" type="static_transform_publisher" name="ftsensor_FRAME" args="1 0 0 0 0 0 /world /Features_markers 500" />
+</launch>

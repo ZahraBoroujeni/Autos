@@ -1,0 +1,8 @@
+<launch>
+  <!-- % rosrun joy joy_node _dev:=/dev/input/js0 _deadzone:=0.12 --> 
+  <node respawn="true" pkg="joy" type="joy_node" name="gamepad" >
+    <param name="dev" type="string" value="/dev/input/js0" />
+    <param name="deadzone" value="0.12" />
+  </node>
+  <!--remap from="/joy/axes" to="/drc_vehicle/gas_pedal/cmd"/-->
+</launch>

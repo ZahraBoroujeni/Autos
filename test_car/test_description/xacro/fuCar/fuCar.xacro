@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="fuCar" >
+    
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find test_description)/xacro/materials.xacro" />
+  
+  <!-- Import robot -->
+
+  <xacro:include filename="$(find test_description)/xacro/fuCar/fuCar_body.xacro"/>
+  <xacro:fuCar_body name="chassis" parent="base_link" meshes="package://test_description/meshes"/>
+  
+  
+   
+  <!-- Laser  -->
+  <xacro:include filename="$(find test_description)/xacro/laser/hokuyo.xacro"/>
+  <xacro:laser name="front_laser" parent="chassis" xyz="1 0 1.2" rpy="0 0 0" meshes="package://test_description/meshes/laser"/>
+   
+  <!-- Camera  -->
+  <!--xacro:include filename="$(find test_description)/xacro/camera/camera.xacro"/>
+  <xacro:cam name="front_camera" parent="polaris_ranger_ev/chassis" xyz="0 0 2" rpy="0 0 0" /-->
+  
+  
+</robot>

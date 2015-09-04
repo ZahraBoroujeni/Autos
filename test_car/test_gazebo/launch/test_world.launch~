@@ -1,6 +1,6 @@
 <launch>
 
-<!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
   <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="gui" default="true"/>
@@ -9,7 +9,7 @@
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find audi_gazebo)/worlds/vrc_final_task1.world"/>
+    <arg name="world_name" value="$(find test_gazebo)/worlds/vrc_final_task1.world"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="paused" value="$(arg paused)"/>
@@ -17,25 +17,28 @@
     <arg name="headless" value="$(arg headless)"/>
   </include>
 
+  <env name="VRC_CHEATS_ENABLED" value="1"/>
 
    <!--node pkg="tf" type="static_transform_publisher" name="map_to_odom_broadcaster" args="0 0 0 0 0 0 map nav 100" /-->
 
    <!-- Robot with diff drive -->
   	<include file="$(find test_description)/launch/fuCar.gazebo.launch">
+    	<arg name="robot_name" value="fuCar" />
+    	<arg name="robot_position" value="-x 0.0 -y 0 -z 0 -R 0 -P 0 -Y 0" />
    	</include>
 
    	<!--node pkg="tf" type="static_transform_publisher" name="base_to_odom_r1" args="0.0 -0.0 0.0 0.0 0.0 0.0 base_link fuCar/odom 200" /-->
-    <!--node pkg="tf" type="static_transform_publisher" name="base_to_odom_r1" args="0.0 0.0 0.0 0.0 0.0 0.0 map fuCar/chassis 200" /-->
+    <!--node pkg="tf" type="static_transform_publisher" name="base_to_odom_r1" args="0.0 0.0 0.0 0.0 0.0 0.0 fuCar/chassis fuCar/odom 200" /-->
 
      
   	<!-- RVIZ -->
   	<!--node pkg="rviz" type="rviz" name="rviz" args="-d $(find test_description)/launch/fuCar.rviz" /-->
 
      <!-- % rosrun joy joy_node _dev:=/dev/input/js0 _deadzone:=0.12 --> 
-    <node respawn="true" pkg="joy" type="joy_node" name="gamepad" >
+    <!--node respawn="true" pkg="joy" type="joy_node" name="gamepad" >
       <param name="dev" type="string" value="/dev/input/js0" />
       <param name="deadzone" value="0.12" />
-    </node>
+    </node-->
 
 
   <!-- Load the URDF into the ROS Parameter Server -->

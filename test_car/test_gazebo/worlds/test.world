@@ -13,9 +13,21 @@
     </include>
 
     <include>
-      <uri>model://drc_vehicle_xp900</uri>
-      <pose>2 -2 0 0 0 0</pose>
+      <uri>model://hokuyo</uri>
+      <pose>0.7 0 1.4 0 0 0</pose>
     </include>
+
+    <include>
+      <uri>model://distorted_camera</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://drc_vehicle_xp900</uri>
+      <pose>3 0 0 0 0 0</pose>
+    </include>
+
+  
 
     <!-- Focus camera on tall pendulum -->
     <gui fullscreen='0'>
