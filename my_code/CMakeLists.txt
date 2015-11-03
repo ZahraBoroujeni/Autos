@@ -9,6 +9,8 @@ find_package(catkin REQUIRED COMPONENTS gazebo_ros roscpp std_msgs genmsg geomet
 find_package(Boost REQUIRED COMPONENTS thread)
 
 find_package(Threads REQUIRED)
+find_package(OpenCV)
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 
 # TODO: fill in what other packages will need to use this package
@@ -28,8 +30,8 @@ catkin_package(
     LIBRARIES # TODO
 
 )
-add_executable(talker src/talker.cpp)
-target_link_libraries(talker ${catkin_LIBRARIES})
+add_executable(talker src/camera_test.cpp)
+target_link_libraries(talker ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(talker ${catkin_EXPORTED_TARGETS})
 
 

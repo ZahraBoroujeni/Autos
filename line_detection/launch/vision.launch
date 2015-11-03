@@ -1,0 +1,6 @@
+<launch>
+  <include file="$(find openni2_launch)/launch/openni2.launch" />
+
+  <!--node name="openni2_node" pkg="openni2_launch" type="openni2_launch" /-->
+  <node name="show_rgb_node" pkg="line_detection" type="show_rgb_node" />
+</launch>

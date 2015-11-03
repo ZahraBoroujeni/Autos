@@ -1,21 +1,19 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(slam)
+project(line_detection)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp message_generation std_msgs geometry_msgs tf rosconsole roscpp_serialization  rostime )
-find_package(Boost REQUIRED )
-find_library(eigen REQUIRED)
-
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs sensor_msgs cv_bridge pcl_ros)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
-
+find_package(OpenCV REQUIRED)
+find_package(PCL REQUIRED)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+## See http://ros.org/doc/groovy/api/catkin/html/user_guide/setup_dot_py.html
 # catkin_python_setup()
 
 #######################################
@@ -23,11 +21,11 @@ find_library(eigen REQUIRED)
 #######################################
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-	Transform.msg
+# add_message_files(
+#   FILES
+#   Message1.msg
 #   Message2.msg
- )
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -37,26 +35,24 @@ find_library(eigen REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs  # Or other packages containing msgs
-   geometry_msgs
- )
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ###################################
 ## catkin specific configuration ##
 ###################################
 ## The catkin_package macro generates cmake config files for your package
 ## Declare things to be passed to dependent projects
-## INCLUDE_DIRS: uncomment this if you package contains header files
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES tf_frames
-  CATKIN_DEPENDS std_msgs geometry_msgs message_runtime      
-#  DEPENDS eigen
+   INCLUDE_DIRS include
+   LIBRARIES ${PROJECT_NAME} 
+   CATKIN_DEPENDS std_msgs sensor_msgs 
+   DEPENDS OpenCV
 )
 
 ###########
@@ -65,43 +61,47 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
 include_directories(include
   ${catkin_INCLUDE_DIRS}
-  ${eigen_INCLUDE_DIRS} /usr/include/eigen3
-  ${boost_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS} /usr/include/opencv2
+  ${PCL_INCLUDE_DIRS}
 )
+
 
 ## Declare a cpp library
-
-add_library(kalman
-  src/Kalman.cpp
-)
+add_library(LaneDetector
+   src/LaneDetector.cpp
+   src/StrongClassifier.cpp
+   src/WeakClassifier.cpp
+   src/Feature.cpp
+   src/ContourModel.cpp
+   src/LaneModel.cpp
+   src/PointSet.cpp
+   src/Circle.cpp
+ )
 
 ## Declare a cpp executable
-add_executable(slam_node src/slam_node.cpp)
-add_executable(tf_kalman_node src/tf_kalman_node.cpp)
-#add_executable(tf_without_kalman_node src/tf_without_kalman_node.cpp)
-
+add_executable(show_ir_node src/laneDetection.cpp)
+add_executable(show_rgb_node src/show_rgb.cpp)
+add_executable(show_depth_node src/show_depth.cpp)
+#add_executable(object_segmentation_node src/obj_segment/get_obj_clusters.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
+# add_dependencies(vision_node vision_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(slam_node
-   ${catkin_LIBRARIES}
-   ${Boost_LIBRARIES}
-)
-target_link_libraries(tf_kalman_node
-   ${catkin_LIBRARIES}
-   kalman
-)
+target_link_libraries(show_ir_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} LaneDetector) 
+target_link_libraries(show_rgb_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(show_depth_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#target_link_libraries(object_segmentation_node ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+
 #############
 ## Install ##
 #############
 
 # all install targets should use catkin DESTINATION variables
-# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
+# See http://ros.org/doc/groovy/api/catkin/html/adv_user_guide/variables.html
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
@@ -111,11 +111,11 @@ target_link_libraries(tf_kalman_node
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS tf_frames tf_frames_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(TARGETS show_ir_node show_rgb_node show_depth_node
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
@@ -136,7 +136,7 @@ target_link_libraries(tf_kalman_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_tf_frames.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_vision.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

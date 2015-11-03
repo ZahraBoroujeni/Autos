@@ -26,7 +26,7 @@ kalman::kalman()
  {
     kalman_P +=kalman_V;
     double a,b,c;
-    double tx=kalman_x[0];
+    double tx=-kalman_x[0];
     double ty=kalman_x[1];
     double tz=kalman_x[2];
     double qx=kalman_x[3];
@@ -42,33 +42,33 @@ kalman::kalman()
         b=startP(i,1);
         c=startP(i,2);
 
-        kalman_h(3*i)=(1-2*qy*qy-2*qz*qz)*a+2*(qx*qy-qw*qz)*b+2*(qx*qz+qw*qy)*c+ tx;
-        kalman_h(3*i+1)=2*(qx*qy+qw*qz)*a+(1-2*qx*qx-2*qz*qz)*b+2*(qy*qz-qw*qx)*c+ty;
-        kalman_h(3*i+2)=2*(qx*qz-qw*qy)*a+2*(qy*qz+qw*qx)*b+(1-2*qx*qx-2*qy*qy)*c+tz;
+        kalman_h(3*i)=(1-2*qy*qy-2*qz*qz)*a+2*(qx*qy+qw*qz)*b+2*(qx*qz-qw*qy)*c-tx;
+        kalman_h(3*i+1)=2*(qx*qy-qw*qz)*a+(1-2*qx*qx-2*qz*qz)*b+2*(qy*qz+qw*qx)*c-ty;
+        kalman_h(3*i+2)=2*(qx*qz+qw*qy)*a+2*(qy*qz-qw*qx)*b+(1-2*qx*qx-2*qy*qy)*c-tz;
 
-        kalman_H(3*i,0)=1;
+        kalman_H(3*i,0)=-1;
         kalman_H(3*i,1)=0;
         kalman_H(3*i,2)=0;
         kalman_H(3*i,3)=2*b*qy+2*c*qz;
-        kalman_H(3*i,4)=-4*a*qy+2*b*qx+2*c*qw;
-        kalman_H(3*i,5)=-4*a*qz-2*b*qw+2*c*qx;
-        kalman_H(3*i,6)=-2*b*qz+2*c*qy;
+        kalman_H(3*i,4)=-4*a*qy+2*b*qx-2*c*qw;
+        kalman_H(3*i,5)=-4*a*qz+2*b*qw+2*c*qx;
+        kalman_H(3*i,6)=2*b*qz-2*c*qy;
            
         kalman_H(3*i+1,0)=0;
-        kalman_H(3*i+1,1)=1;
+        kalman_H(3*i+1,1)=-1;
         kalman_H(3*i+1,2)=0;
-        kalman_H(3*i+1,3)=2*a*qy-4*b*qx-2*c*qw;
+        kalman_H(3*i+1,3)=2*a*qy-4*b*qx+2*c*qw;
         kalman_H(3*i+1,4)=2*a*qx+2*c*qz;
-        kalman_H(3*i+1,5)=2*a*qw-4*b*qz+2*c*qy;
-        kalman_H(3*i+1,6)=2*a*qz-2*c*qx;
+        kalman_H(3*i+1,5)=-2*a*qw-4*b*qz+2*c*qy;
+        kalman_H(3*i+1,6)=-2*a*qz+2*c*qx;
            
         kalman_H(3*i+2,0)=0;
         kalman_H(3*i+2,1)=0;
-        kalman_H(3*i+2,2)=1;
-        kalman_H(3*i+2,3)=2*a*qz+2*b*qw-4*c*qx;
-        kalman_H(3*i+2,4)=-2*a*qw+2*b*qz-4*c*qy;
+        kalman_H(3*i+2,2)=-1;
+        kalman_H(3*i+2,3)=2*a*qz-2*b*qw-4*c*qx;
+        kalman_H(3*i+2,4)=2*a*qw+2*b*qz-4*c*qy;
         kalman_H(3*i+2,5)=2*a*qx+2*b*qy;
-        kalman_H(3*i+2,6)=-2*a*qy+2*b*qx;
+        kalman_H(3*i+2,6)=2*a*qy-2*b*qx;
     }
 }
 

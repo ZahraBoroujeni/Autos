@@ -77,7 +77,7 @@ class online_tf
     	
         read_map_coordinates(map_file_path,max_id);
         read_camera_coordinates(camera_file_path,max_id);
-        transfParameters.resize(3);
+        transfParameters.resize(7);
     	    	// subscribe to topics
         //read_map_positions = nh_.subscribe(nh_.resolveName("/phase_space_markers"),10, &online_tf::calculate_tf,this);
         //read_map_positions=
@@ -158,7 +158,7 @@ void online_tf::calculate_tf()
 
 	Eigen::MatrixXd startP=map_points.block(0,0,numrows,3);
 
-	Eigen::MatrixXd finalP=read_points.block(0,0,numrows,3);
+	Eigen::MatrixXd finalP=camera_points.block(0,0,numrows,3);
     for (int i=0;i<numrows;i++)
     {
         //ROS_INFO("inja %i,%G=%G\n",i,startP(i,1),finalP(i,1));
@@ -167,20 +167,23 @@ void online_tf::calculate_tf()
 	if (filter.getFirst()==0)
 	{	
 		filter.setFirst(1);
-		OptimalRigidTransformation(startP,finalP);
-		filter.setKalman_x(transfParameters);
-        printf("%f\n", transfParameters(0));
+		OptimalRigidTransformation(finalP,startP);
+		//filter.setKalman_x(transfParameters);
+       // printf("%f\n", transfParameters(0));
 
 
 	}		
 	else
 	{	
-		filter.prediction(startP);		
-		transfParameters=filter.update(finalP);
+		
+        OptimalRigidTransformation(finalP,startP);
+      //  filter.prediction(startP);		
+		//transfParameters=filter.update(finalP);
 	}
 
-    tr.setOrigin( tf::Vector3(transfParameters(1),transfParameters(2),0));
-    tr.setRotation( tf::Quaternion(transfParameters(0),0,0,1));
+    tr.setOrigin( tf::Vector3(transfParameters(0),transfParameters(1),transfParameters(2)));
+    tr.setRotation( tf::Quaternion(transfParameters(3),transfParameters(4),transfParameters(5),transfParameters(6)));
+
 
 	slam::Transform msg_t;
 
@@ -246,7 +249,8 @@ void online_tf::OptimalRigidTransformation(Eigen::MatrixXd startP, Eigen::Matrix
 
 	Eigen::Vector3d trasl=transf.block<3,1>(0,3).transpose();
 
-    transfParameters<<0,0,0;
+    transfParameters<<trasl(0),trasl(1),trasl(2),mat_rot.x(),mat_rot.y(),mat_rot.z(),mat_rot.w();
+
 
 }
 
