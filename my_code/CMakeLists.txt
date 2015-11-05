@@ -5,7 +5,7 @@ project(my_code)
 set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
-find_package(catkin REQUIRED COMPONENTS gazebo_ros roscpp std_msgs genmsg geometry_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs genmsg geometry_msgs)
 find_package(Boost REQUIRED COMPONENTS thread)
 
 find_package(Threads REQUIRED)
@@ -21,7 +21,6 @@ include_directories(${OpenCV_INCLUDE_DIRS})
  generate_messages(
    DEPENDENCIES
    std_msgs
-   gazebo_msgs
 )
 catkin_package(
     DEPENDS Boost

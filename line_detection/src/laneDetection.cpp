@@ -25,7 +25,7 @@ THIS SOFTWARE IS PROVIDED BY AUDI AG AND CONTRIBUTORS “AS IS” AND ANY EXPRES
 using namespace std;
 using namespace cv;
 
-#define PAINT_OUTPUT
+//#define PAINT_OUTPUT
 #define PROJECTED_IMAGE_HEIGTH 160
 
 static const uint32_t MY_ROS_QUEUE_SIZE = 1000;
@@ -147,7 +147,7 @@ void cLaneDetection::ProcessInput(const sensor_msgs::Image::ConstPtr& msg)
 
                 //---------------------- END DEBUG OUTPUT CONTOURS------------------------------//
         #endif
-         // LOG_INFO(cString::Format("Found: %d",midLaneFound));
+        ROS_ERROR("Found: %d",midLaneFound);
         model.improvedUpdate(&nicelyGroupedPoints,midLaneFound);
 
         // LOG_INFO(cString::Format("CERTAINTY: %d",model.certainty));

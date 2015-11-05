@@ -1,6 +1,5 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-#include "gazebo_msgs/ModelStates.h"
 #include <geometry_msgs/TransformStamped.h>
 #include <sensor_msgs/Joy.h>
 #include "std_msgs/Float64.h"

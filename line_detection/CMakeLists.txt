@@ -4,13 +4,14 @@ project(line_detection)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+find_package(OpenCV REQUIRED)
+find_package(PCL REQUIRED)
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs sensor_msgs cv_bridge pcl_ros)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
-find_package(OpenCV REQUIRED)
-find_package(PCL REQUIRED)
+
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/groovy/api/catkin/html/user_guide/setup_dot_py.html
@@ -81,7 +82,7 @@ add_library(LaneDetector
  )
 
 ## Declare a cpp executable
-add_executable(show_ir_node src/laneDetection.cpp)
+add_executable(line_detection_node src/laneDetection.cpp)
 add_executable(show_rgb_node src/show_rgb.cpp)
 add_executable(show_depth_node src/show_depth.cpp)
 #add_executable(object_segmentation_node src/obj_segment/get_obj_clusters.cpp)
@@ -91,7 +92,7 @@ add_executable(show_depth_node src/show_depth.cpp)
 # add_dependencies(vision_node vision_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(show_ir_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} LaneDetector) 
+target_link_libraries(line_detection_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} LaneDetector) 
 target_link_libraries(show_rgb_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(show_depth_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 #target_link_libraries(object_segmentation_node ${catkin_LIBRARIES} ${PCL_LIBRARIES})
@@ -111,7 +112,7 @@ target_link_libraries(show_depth_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS show_ir_node show_rgb_node show_depth_node
+install(TARGETS line_detection_node show_rgb_node show_depth_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
