@@ -1,5 +1,6 @@
 #include "IPMapper.h"
 
+
 Mat IPMapper::remap(Mat input)
 {
     Mat remappedImage(outputHeight,outputWidth,CV_8UC1,Scalar(0));
@@ -15,9 +16,13 @@ Mat IPMapper::remap(Mat input)
             }
         }
     }
-    GaussianBlur(remappedImage, remappedImage, Size(5,5),1);
+    
+      GaussianBlur(remappedImage, remappedImage, Size(5,5),1);
+    
     return remappedImage;
 }
+
+
 
 IPMapper::IPMapper(int ow,int oh)
 {
@@ -25,19 +30,18 @@ IPMapper::IPMapper(int ow,int oh)
     outputHeight = oh;
     
     //CAMERA PARAMETERS:
-    f_u = 524.692545;                       //focal lense values (mm)
+    f_u = 524.692545;                           //focal lense values (mm)
     f_v = 524.692545;
     
-    c_u = 319.5;                            //camera optical center
+    c_u = 319.5;                           //camera optical center
     c_v = 239.5;
 
     double pi = 3.1415926;
     double deg = 15;
-
-    c_1 = cos(pi/180*deg);                 //cos(alpha : pitch angle),cos(beta : yaw angle)
+    c_1 = cos(pi/180*deg);                             //cos(alpha : pitch angle),cos(beta : yaw angle)
     c_2 = 1.0;
     
-    s_1 = sin(pi/180*deg);                 //sin(alpha : pitch angle),sin(beta : yaw angle)
+    s_1 = sin(pi/180*deg);                             //sin(alpha : pitch angle),sin(beta : yaw angle)
     s_2 = 0.0;
     
     cam_h = 22.5;
@@ -73,7 +77,7 @@ void IPMapper::initMappingMatrix(Mat_<cv::Point>* pointMatrix)
             
             if(result.at(0).x >= 0 && result.at(0).x < 640 && result.at(0).y >= 0 && result.at(0).y < 480)
             {
-                pointMatrix->at<Point>(y,x) = (Point)result.at(0);
+                pointMatrix->at<Point>(y,x) = result.at(0);
             }
             
         }

@@ -22,9 +22,10 @@ THIS SOFTWARE IS PROVIDED BY AUDI AG AND CONTRIBUTORS “AS IS” AND ANY EXPRES
  ***************************************************************************/
 
 #include "LaneDetector.h"
+#include <ros/package.h>
 
-#define PATH_2FEATURES "/home/zargol/catkin_ws/src/line_detection/src/strongClassifiers/classifier_2features.txt"
-#define PATH_30FEATURES "/home/zargol/catkin_ws/src/line_detection/src/strongClassifiers/classifier_30features.txt"
+#define PATH_2FEATURES "/home/zargol/catkin_ws/src/Autos/line_detection/src/strongClassifiers/classifier_2features.txt"
+#define PATH_30FEATURES "/home/zargol/catkin_ws/src/Autos/line_detection/src/strongClassifiers/classifier_30features.txt"
 
 LaneDetector::LaneDetector(int size,Point p1,Point p2) : classifier_2features(PATH_2FEATURES,0.5),classifier_30features(PATH_30FEATURES,0.5)
 {

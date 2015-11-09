@@ -42,6 +42,7 @@ public:
     vector<Point2d> detect(Mat grayscaleImage, Mat sobeledImage, Mat groundplaneImage);
     
 private:
+	std::string classifier_file_path;
     int detectorSize;
     Point foe_1;
     Point foe_2;

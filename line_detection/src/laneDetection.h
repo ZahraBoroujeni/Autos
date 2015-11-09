@@ -96,6 +96,8 @@ class cLaneDetection
         LaneDetector detector;
         LaneModel    model;
 
+        //std::string PATH_2FEATURES,PATH_30FEATURES;
+
         // cObjectPtr<IMediaTypeDescription> m_pCoderDescLaneInfo;
         // cObjectPtr<IMediaTypeDescription> m_pCoderDescMotionData;
         // cObjectPtr<IMediaTypeDescription> m_pCoderDescValue;
@@ -103,6 +105,7 @@ class cLaneDetection
         // cObjectPtr<IMediaTypeDescription> m_pCoderDescValueOvertaking;
 
     public:
+        std::string classifier_file_path;
 
         void resetSystem();
 

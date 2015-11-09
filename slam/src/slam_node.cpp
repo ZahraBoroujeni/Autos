@@ -7,8 +7,6 @@
 #include "tf/transform_datatypes.h"
 #include <visualization_msgs/MarkerArray.h>
 #include <std_msgs/String.h>
-
-
 #include <Eigen/Eigen>
 namespace transformations {
 
@@ -40,7 +38,6 @@ class online_tf
 
   public:
     std::string map_file_path;
-
     ros::Publisher pub_transform_;
     visualization_msgs::MarkerArray feature_markers_;
 
@@ -53,7 +50,6 @@ class online_tf
         priv_nh_.param<std::string>("start_frame", start_frame, "");
         priv_nh_.param<std::string>("end_frame", end_frame, "");
 
-
         int max_id=-1;
         marker_id.resize(argc-1);
         for (int i=0;i<argc-1;i++)
@@ -65,8 +61,6 @@ class online_tf
         transfParameters.resize(7);
         pub_transform_= nh.advertise<visualization_msgs::MarkerArray>(nh.resolveName("/Features_markers"), 1);
         read_map_coordinates(map_file_path,16);
-
-
     }
 
     void inizialize_markers(visualization_msgs::Marker&);
@@ -101,8 +95,6 @@ void online_tf::read_map_coordinates(std::string map_file_path,int max_id)
     int id;
     visualization_msgs::MarkerArray msg;
     visualization_msgs::Marker mark;
-
-
     map_points=Eigen::MatrixXd::Zero(max_id+1,4);
 
     if (!f_in)
@@ -129,7 +121,6 @@ void online_tf::read_map_coordinates(std::string map_file_path,int max_id)
         if (int(id/4)==3)
             mark.color.a = 1;
         feature_markers_.markers.push_back(mark);
-    
     }
     pub_transform_.publish(feature_markers_);
 }
