@@ -1,25 +1,24 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(IPMapping)
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+project(motor_communication)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(OpenCV REQUIRED)
-find_package(PCL REQUIRED)
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs sensor_msgs cv_bridge pcl_ros image_transport)
-
+find_package(catkin REQUIRED roscpp serial)
+find_package(serial REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
+
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
-## See http://ros.org/doc/groovy/api/catkin/html/user_guide/setup_dot_py.html
+## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
 # catkin_python_setup()
-
 #######################################
 ## Declare ROS messages and services ##
 #######################################
-
+ 
 ## Generate messages in the 'msg' folder
 # add_message_files(
 #   FILES
@@ -45,14 +44,14 @@ find_package(catkin REQUIRED COMPONENTS roscpp std_msgs sensor_msgs cv_bridge pc
 ###################################
 ## The catkin_package macro generates cmake config files for your package
 ## Declare things to be passed to dependent projects
+## INCLUDE_DIRS: uncomment this if you package contains header files
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-   INCLUDE_DIRS include
-   LIBRARIES ${PROJECT_NAME} 
-   CATKIN_DEPENDS std_msgs sensor_msgs   
-   DEPENDS OpenCV
+ LIBRARIES ${PROJECT_NAME}
+ CATKIN_DEPENDS serial
+#  DEPENDS system_lib
 )
 
 ###########
@@ -61,35 +60,28 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include
-  ${catkin_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
-  ${PCL_INCLUDE_DIRS}
-)
+# include_directories(include)
+## Include headers
+include_directories(${catkin_INCLUDE_DIRS})
+
 
 ## Declare a cpp library
-add_library(IPMapper
-   src/IPMapper.cpp
- )
+#add_library(motor src/motor_communication_node.cpp)
+
 
 ## Declare a cpp executable
-add_executable(IPMapper_node src/IPMapper_node.cpp)
-#add_executable(object_segmentation_node src/obj_segment/get_obj_clusters.cpp)
-
-## Add cmake target dependencies of the executable/library
-## as an example, message headers may need to be generated before nodes
-# add_dependencies(vision_node vision_generate_messages_cpp)
-
-## Specify libraries to link a library or executable target against
-target_link_libraries(IPMapper_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} IPMapper) 
-#target_link_libraries(object_segmentation_node ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+# add_executable(object_node src/object_node.cpp)
+add_executable(motor_communication_node src/motor_communication_node.cpp)
+add_dependencies(motor_communication_node ${PROJECT_NAME})
+target_link_libraries(motor_communication_node ${catkin_LIBRARIES})
+#target_link_libraries(motor_communication_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 #############
 ## Install ##
 #############
 
 # all install targets should use catkin DESTINATION variables
-# See http://ros.org/doc/groovy/api/catkin/html/adv_user_guide/variables.html
+# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
@@ -99,12 +91,11 @@ target_link_libraries(IPMapper_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} IPMa
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS IPMapper_node
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
+# install(TARGETS object object_node
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
 #   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
@@ -124,7 +115,7 @@ install(TARGETS IPMapper_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_vision.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_object.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

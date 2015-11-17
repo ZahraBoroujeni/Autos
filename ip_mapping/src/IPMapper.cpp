@@ -17,7 +17,7 @@ Mat IPMapper::remap(Mat input)
         }
     }
     
-      GaussianBlur(remappedImage, remappedImage, Size(5,5),1);
+      //GaussianBlur(remappedImage, remappedImage, Size(5,5),1);
     
     return remappedImage;
 }

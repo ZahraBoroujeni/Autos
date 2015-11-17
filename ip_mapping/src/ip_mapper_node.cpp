@@ -33,7 +33,7 @@ using namespace cv;
 #include "IPMapper.h"
 #include <image_transport/image_transport.h>
 #define PROJECTED_IMAGE_HEIGTH 250
-#define PAINT_OUTPUT
+//#define PAINT_OUTPUT
 
 class online_IPM
 {
@@ -58,7 +58,7 @@ class online_IPM
     // constructor
     online_IPM(ros::NodeHandle nh) : nh_(nh), priv_nh_("~"),ipMapper(640,480),it(nh_)
     {
-        read_images_= nh_.subscribe(nh_.resolveName("/camera/rgb/image_rect_color"), 1000,&online_IPM::publish_remapper,this);
+        read_images_= nh_.subscribe(nh_.resolveName("/camera/rgb/image_rect_color"), 1,&online_IPM::publish_remapper,this);
         pub_mapped_images_= it.advertise("camera/ground_image", 1);
         //ipMapper.initialize(200,PROJECTED_IMAGE_HEIGTH, fu, fv, cx, cy, pitch);
     }
@@ -74,24 +74,21 @@ class online_IPM
 
 void online_IPM::publish_remapper(const sensor_msgs::Image::ConstPtr& msg)
 {
-    // VideoInput
-    std::cout << "Hey, listen!" << std::endl;
   
-    //ROS_INFO("CERTAINTY:");
+    ROS_INFO("Publish remapper: true");
+    
     try
     {
         cv_bridge::CvImagePtr cv_ptr;
         cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO8);
-        Mat gray;
-        gray = cv_ptr->image.clone();
-        Mat remapped = gray.clone();
-        remapped=ipMapper.remap(gray);
-        #ifdef PAINT_OUTPUT
-            cv::imshow("foo", remapped);
-            cv::imshow("foo1", gray);
-            cv::waitKey(1);
-        #endif
-        sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(),sensor_msgs::image_encodings::MONO8, remapped).toImageMsg();
+        Mat remapped_image;
+        remapped_image=ipMapper.remap(cv_ptr->image);
+
+        // #ifdef PAINT_OUTPUT //3ms
+        //     cv::imshow("foo", cv_ptr->image);
+        //     cv::waitKey(1);
+        // #endif
+        sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(),sensor_msgs::image_encodings::MONO8, remapped_image).toImageMsg();
         pub_mapped_images_.publish(msg);
     } 
     catch (const cv_bridge::Exception& e)
@@ -111,6 +108,5 @@ int main(int argc, char **argv)
         ros::spinOnce();
 
     }
-
     return 0;
 }

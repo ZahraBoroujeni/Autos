@@ -2,7 +2,5 @@
   <include file="$(find openni2_launch)/launch/openni2.launch" />
 
   <!--node name="openni2_node" pkg="openni2_launch" type="openni2_launch" /-->
-  <node name="line_detection_node" pkg="line_detection" type="line_detection_node" />
-  <node name="IPMapper_node" pkg="ip_mapping" type="IPMapper_node" />
-
+  <node name="ip_mapper_node" pkg="ip_mapping" type="ip_mapper_node" output="screen"/>
 </launch>

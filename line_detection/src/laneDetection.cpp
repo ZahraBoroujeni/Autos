@@ -1,9 +1,10 @@
 #include "laneDetection.h"
 
+
 using namespace std;
 using namespace cv;
 
-#define PAINT_OUTPUT
+//#define PAINT_OUTPUT
 #define PROJECTED_IMAGE_HEIGTH 160
 
 static const uint32_t MY_ROS_QUEUE_SIZE = 1000;
@@ -14,7 +15,7 @@ cLaneDetection::cLaneDetection(ros::NodeHandle nh) : nh_(nh), priv_nh_("~"),dete
     //priv_nh_.param<std::string>("PATH_2FEATURES", PATH_2FEATURES, "");
     //priv_nh_.param<std::string>("PATH_30FEATURES", PATH_30FEATURES, "");
     m_LastValue = 0;
-    read_images_ = nh.subscribe(nh_.resolveName("/camera/ground_image"), 1000,&cLaneDetection::ProcessInput,this);
+    read_images_ = nh.subscribe(nh_.resolveName("/camera/ground_image"), 1,&cLaneDetection::ProcessInput,this);
 }
 
 cLaneDetection::~cLaneDetection()
@@ -38,10 +39,14 @@ void cLaneDetection::resetSystem()
 void cLaneDetection::ProcessInput(const sensor_msgs::Image::ConstPtr& msg)
 {
     // VideoInput
-    std::cout << "Hey, listen!" << std::endl;
+    //std::cout << "Hey, listen!" << std::endl;
     //ROS_INFO("CERTAINTY:");
+    //ros::Time begin = ros::Time::now();
+
     try
     {
+        ros::WallTime begin = ros::WallTime::now();
+
         cv_bridge::CvImagePtr cv_ptr;
         cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO8);
         
@@ -59,7 +64,7 @@ void cLaneDetection::ProcessInput(const sensor_msgs::Image::ConstPtr& msg)
         
 
         //create an output image for debugging
-        Mat generalOutputImage(300,800,CV_8UC3,Scalar(0,0,0));
+        //Mat generalOutputImage(300,800,CV_8UC3,Scalar(0,0,0));
         vector<Point2d> laneMarkings = detector.detect(transformedImage,sobeledImage,groundPlane);
 
         #ifdef PAINT_OUTPUT
@@ -96,7 +101,7 @@ void cLaneDetection::ProcessInput(const sensor_msgs::Image::ConstPtr& msg)
         bool midLaneFound = cModel.update(contours,laneMarkings);
         vector<vector<Point2d> > nicelyGroupedPoints = cModel.points;
 
-
+        
         #ifdef PAINT_OUTPUT
                 //---------------------- DEBUG OUTPUT CONTOURS ---------------------------------//
             Mat contourImagePaintable = transformedImage.clone();
@@ -131,7 +136,13 @@ void cLaneDetection::ProcessInput(const sensor_msgs::Image::ConstPtr& msg)
         model.getCarState(&curvature,&distanceRightLane,&angle,&isCurve);
         //send is curve info:
         int stamp = 0;
+        ros::WallTime end = ros::WallTime::now();
+        ros::WallDuration d= end-begin;
+        ROS_ERROR("time: %ld", d.toNSec()/1000000); 
 
+
+        // ros::Time end = ros::Time::now();
+        // ROS_ERROR("time: %d", ((end.nsec-begin.nsec)/1000000)); 
         #ifdef PAINT_OUTPUT
             //---------------------- DEBUG OUTPUT LANE MODEL---------------------------------//
             int carOffset = 50;
@@ -144,11 +155,13 @@ void cLaneDetection::ProcessInput(const sensor_msgs::Image::ConstPtr& msg)
 
            //---------------------- END DEBUG OUTPUT LANE MODEL------------------------------//
         #endif
+
     } 
     catch (const cv_bridge::Exception& e)
     {
         ROS_ERROR("cv_bridge exception: %s", e.what());
     }
+
 }
 int main(int argc, char **argv)
 {
