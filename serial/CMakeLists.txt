@@ -13,7 +13,7 @@ if(UNIX AND NOT APPLE)
         LIBRARIES ${PROJECT_NAME}
         INCLUDE_DIRS include
         DEPENDS rt pthread
-    ) 
+    )  
 else()
     # Otherwise normal call
     catkin_package(
@@ -21,7 +21,7 @@ else()
         INCLUDE_DIRS include
     )
 endif()
-
+  
 ## Sources 
 set(serial_SRCS
     src/serial.cc

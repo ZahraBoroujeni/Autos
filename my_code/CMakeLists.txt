@@ -29,7 +29,7 @@ catkin_package(
     LIBRARIES # TODO
 
 )
-add_executable(talker src/addieren.cpp)
+add_executable(talker src/talker.cpp)
 target_link_libraries(talker ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(talker ${catkin_EXPORTED_TARGETS})
 

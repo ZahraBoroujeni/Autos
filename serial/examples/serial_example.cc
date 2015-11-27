@@ -107,7 +107,7 @@ int run(int argc, char **argv)
   if (argc == 4) {
     test_string = argv[3];
   } else {
-    test_string = "Testing.";
+    test_string = "en";
   }
 
   // Test the timeout, there should be 1 second between prints
@@ -123,7 +123,7 @@ int run(int argc, char **argv)
 
     count += 1;
   }
-
+ test_string = "v1000";
   // Test the timeout at 250ms
   my_serial.setTimeout(serial::Timeout::max(), 250, 0, 250, 0);
   count = 0;

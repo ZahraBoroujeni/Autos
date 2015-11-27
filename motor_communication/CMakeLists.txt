@@ -10,7 +10,7 @@ find_package(serial REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
-
+ 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -75,7 +75,7 @@ add_executable(motor_communication_node src/motor_communication_node.cpp)
 add_dependencies(motor_communication_node ${PROJECT_NAME})
 target_link_libraries(motor_communication_node ${catkin_LIBRARIES})
 #target_link_libraries(motor_communication_node ${PROJECT_NAME} ${catkin_LIBRARIES})
-
+ 
 #############
 ## Install ##
 #############

@@ -25,7 +25,7 @@ void my_sleep(unsigned long milliseconds) {
 }
 int run(int argc, char **argv)
 {
-  string port("/dev/ttyUSB0");
+  string port("/dev/ttySAC2");
   unsigned long baud = 921600;
   // port, baudrate, timeout in milliseconds
   serial::Serial my_serial(port, baud, serial::Timeout::simpleTimeout(1000));
