@@ -20,6 +20,8 @@
   <build_depend>sensor_msgs</build_depend>
   <build_depend>motor_communication</build_depend>
   <run_depend>motor_communication</run_depend>
+  <build_depend>send_steering</build_depend>
+  <run_depend>send_steering</run_depend>
 
 
 

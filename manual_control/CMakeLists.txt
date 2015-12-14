@@ -5,7 +5,7 @@ project(manual_control)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED roscpp motor_communication)
+find_package(catkin REQUIRED roscpp motor_communication send_steering)
 
 
 ## System dependencies are found with CMake's conventions
@@ -51,7 +51,7 @@ find_package(catkin REQUIRED roscpp motor_communication)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 	LIBRARIES ${PROJECT_NAME}
-	CATKIN_DEPENDS motor_communication
+	CATKIN_DEPENDS motor_communication send_steering
 )
 
 

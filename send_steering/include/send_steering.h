@@ -21,32 +21,25 @@ using std::vector;
 typedef int16_t speed_MMpS_t;
 
 
-class motor_communication
+class send_steering
 {
   private:
     //! Node handle in the private namespace
     //ros::NodeHandle priv_nh_;
 
-    std::string serial_port_="/dev/ttySAC2";
+    std::string serial_port_="/dev/ttySAC3";
     int baud_rate_=115200;
     std::string result;
     size_t bytes_wrote;
+    serial::Serial servo_serial;
     
-
-    serial::Serial my_serial;
-   
-    //serial::Serial my_serial;
-    //my_serial(serial_port_, 115200, serial::Timeout::simpleTimeout(1000)); 
-
   public:
-    
-
-    motor_communication();
-    ~motor_communication();
+    send_steering();
+    ~send_steering();
     void init();
     void run(int speed);
-    void my_sleep(unsigned long milliseconds);
     void stop();
     void start();
+    
 };
 

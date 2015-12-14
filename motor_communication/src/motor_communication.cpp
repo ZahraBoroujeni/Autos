@@ -33,16 +33,27 @@ void motor_communication::init()
 	  else
 	    cout << " No." << endl;
 
-	  string test_string="en\r\n";
-	  bytes_wrote =my_serial.write(test_string);
-	  cout << bytes_wrote << endl;
-	  result = my_serial.read(test_string.length()+2);
+	  bytes_wrote =my_serial.write("en\r\n");
+	  result = my_serial.read(4+2);
 	  ROS_INFO("start:%s \n",result.c_str());
 
     }
     catch(const std::exception& e)
     {	 
       	ROS_ERROR("could not find serial port");
+    }
+}
+void motor_communication::start()
+{
+    try
+    {
+      bytes_wrote =my_serial.write("en\r\n");
+      result = my_serial.read(4+2);
+      ROS_INFO("start:%s \n",result.c_str());
+    }
+    catch(const std::exception& e)
+    {  
+        ROS_ERROR("could not find serial port");
     }
 }
 void motor_communication::run(int speed)
