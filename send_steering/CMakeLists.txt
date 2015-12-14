@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-
-project(motor_communication)
+project(send_steering)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -50,7 +49,6 @@ find_package(serial REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
- INCLUDE_DIRS include
  LIBRARIES ${PROJECT_NAME}
  CATKIN_DEPENDS serial
 #  DEPENDS system_lib
@@ -64,20 +62,19 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 ## Include headers
-include_directories(include
-  ${catkin_INCLUDE_DIRS}
-)
+include_directories(${catkin_INCLUDE_DIRS})
 
 
 ## Declare a cpp library
-add_library(${PROJECT_NAME} src/motor_communication.cpp)
+#add_library(motor src/motor_communication_node.cpp)
 
 
 ## Declare a cpp executable
 # add_executable(object_node src/object_node.cpp)
-add_executable(motor_communication_node src/motor_communication_node.cpp)
-add_dependencies(motor_communication_node ${PROJECT_NAME})
-target_link_libraries(motor_communication_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+add_executable(send_steering_node src/send_steering_node.cpp)
+add_dependencies(send_steering_node ${PROJECT_NAME})
+target_link_libraries(send_steering_node ${catkin_LIBRARIES})
+#target_link_libraries(motor_communication_node ${PROJECT_NAME} ${catkin_LIBRARIES})
  
 #############
 ## Install ##
@@ -93,19 +90,18 @@ target_link_libraries(motor_communication_node ${PROJECT_NAME} ${catkin_LIBRARIE
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
-
 ## Mark executables and/or libraries for installation
-install(TARGETS  motor_communication_node
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# install(TARGETS object object_node
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 ## Mark cpp header files for installation
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
-  PATTERN ".svn" EXCLUDE
-)
+# install(DIRECTORY include/${PROJECT_NAME}/
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h"
+#   PATTERN ".svn" EXCLUDE
+# )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES

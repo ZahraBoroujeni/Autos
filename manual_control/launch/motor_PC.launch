@@ -1,0 +1,8 @@
+<launch>
+	<node pkg="manual_control" type="manual_control_node" name="manual_control" output="screen">
+  		<param name="serial_port" value="/dev/ttyUSB0" />
+  		<param name="baud_rate" value="115200" />
+  	</node>
+
+
+</launch>
